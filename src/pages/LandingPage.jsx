@@ -8,7 +8,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import Button from "../components/Elements/Button";
 import Svg from "../components/Elements/Svg";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import Footer from "../components/Elements/Footer";
 import Zaika from "../components/Elements/Zaika";
 import Navbar from "../components/Elements/Navbar";
@@ -186,11 +186,47 @@ const Home = () => {
 
   // Define state to track which FAQ item is currently expanded
   const [activeIndex, setActiveIndex] = useState(null);
-  // const navigate = useNavigate()
+  const navigate = useNavigate();
 
   // Function to toggle the active FAQ item
   const toggleActiveIndex = (index) => {
     setActiveIndex(activeIndex === index ? null : index);
+  };
+
+  // const handleRedirect = () => {
+  //   const userAgent = navigator.userAgent.toLowerCase();
+
+  //   if (userAgent.includes("safari") && !userAgent.includes("chrome")) {
+  //     // Navigate to the App Store link for Safari users
+  //     window.location.href =
+  //       "https://apps.apple.com/ca/app/mr-gift-cart/id6499106733";
+  //   } else if (userAgent.includes("chrome")) {
+  //     // Navigate to the Google Play Store link for Chrome users
+  //     window.location.href =
+  //       "https://play.google.com/store/apps/details?id=com.mrgiftsolutionscorp.ca";
+  //   } else {
+  //     alert("Your browser is not supported for this redirection.");
+  //   }
+  // };
+
+  const handleRedirect = () => {
+    const userAgent = navigator.userAgent.toLowerCase();
+
+    if (userAgent.includes("safari") && !userAgent.includes("chrome")) {
+      // Open the App Store link in a new tab for Safari users
+      window.open(
+        "https://apps.apple.com/ca/app/mr-gift-cart/id6499106733",
+        "_blank"
+      );
+    } else if (userAgent.includes("chrome")) {
+      // Open the Google Play Store link in a new tab for Chrome users
+      window.open(
+        "https://play.google.com/store/apps/details?id=com.mrgiftsolutionscorp.ca",
+        "_blank"
+      );
+    } else {
+      alert("Your browser is not supported for this redirection.");
+    }
   };
 
   return (
@@ -244,20 +280,20 @@ const Home = () => {
           </span>
         </h3>
         <div className="flex items-center mt-[17px]">
-          <NavLink
+          <a
             href="https://play.google.com/store/apps/details?id=com.mrgiftsolutionscorp.ca"
             target="_blank"
             className="w-[156px] h-[60px]"
           >
             <img src="../../Play store.png" alt="" className="w-full" />
-          </NavLink>
-          <NavLink
+          </a>
+          <a
             href="https://apps.apple.com/ca/app/mr-gift-cart/id6499106733"
             target="_blank"
             className="w-[156px] h-[60px]"
           >
             <img src="../../IOS.png" alt="" className="w-full" />
-          </NavLink>
+          </a>
         </div>
 
         {/* mobile image  */}
@@ -281,6 +317,7 @@ const Home = () => {
 
           <div className="mt-[21px]">
             <Button
+              handleClick={handleRedirect}
               text={"Download App"}
               className={
                 "w-full h-[42px] flex justify-center items-center mx-auto"
@@ -353,20 +390,20 @@ const Home = () => {
             </div>
           </div>
           <div className="flex items-center mt-[17px] mx-auto">
-            <NavLink
+            <a
               href="https://play.google.com/store/apps/details?id=com.mrgiftsolutionscorp.ca"
               target="_blank"
               className="w-[156px] h-[60px]"
             >
               <img src="../../Play store.png" alt="" className="w-full" />
-            </NavLink>
-            <NavLink
+            </a>
+            <a
               href="https://apps.apple.com/ca/app/mr-gift-cart/id6499106733"
               target="_blank"
               className="w-[156px] h-[60px]"
             >
               <img src="../../IOS.png" alt="" className="w-full" />
-            </NavLink>
+            </a>
           </div>
 
           <div className="flex items-center gap-4 lg:flex-row flex-col lg:justify-start justify-center">
@@ -530,7 +567,10 @@ const Home = () => {
             "text-xs font-medium leading-[15px] text-[#949494] border-b border-b-[#949494]"
           }
         >
-          View All
+          <a href="https://mr-corp.ca/dashboard/luckiest" target="_blank">
+            {" "}
+            View All
+          </a>
         </button>
         {/* handleClick={() => navigate("/dashboard/luckiest")} */}
       </div>
