@@ -204,3 +204,20 @@ input:not(.required__spin__btn)[type="number"] {
   -webkit-text-fill-color: transparent;
   display: inline-block; /* Ensures gradient applies correctly to the text */
 }
+
+.customColor {
+  background: linear-gradient(360deg, #f33f41 0%, #fb6d72 95%) !important;
+}
+
+/* .swiper-pagination {
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 100% !important;
+  background-color: #fb6d72 !important;
+} */
+
+/* .swiper-pagination {
+  margin-top: 25px !important;
+  left: 50%;
+  transform: translate(-50%, -50%);
+} */

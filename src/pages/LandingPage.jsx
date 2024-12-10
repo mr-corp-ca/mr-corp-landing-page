@@ -13,6 +13,7 @@ import Footer from "../components/Elements/Footer";
 import Zaika from "../components/Elements/Zaika";
 import Navbar from "../components/Elements/Navbar";
 import SwiperSectionSlider from "../../src/components/sections/swiper-section/swiper-section";
+import axios from "axios";
 
 const socialMediaAccounts = [
   {
@@ -78,6 +79,26 @@ const Home = () => {
   const [hours, setHours] = useState(8);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
+
+  const [publicWinners, setPublicWinners] = useState(null);
+
+  console.log("publicWinners", publicWinners);
+
+  const fetchPublicWinnersData = async () => {
+    try {
+      const res = await axios.get(
+        "https://api.mr-corp.ca/v2/api/GetPublicWinnser"
+      );
+      setPublicWinners(res.data.response);
+      console.log("response", res);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPublicWinnersData();
+  }, []);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -478,7 +499,7 @@ const Home = () => {
           <p className="max-w-[358px] text-base font-normal leading-6 tracking-[7%] text-[#686868]">
             "🎉
             <span className="text-base font-semibold leading-6 text-[#686868] tracking-[7%]">
-              Jack Smith Shines!
+              {publicWinners?.data[0]?.user?.full_name}
             </span>
             🌟 Secures a Year's Supply of Groceries with DailyDeals. Dive into
             the joy of{" "}
@@ -490,8 +511,94 @@ const Home = () => {
           </p>
         </div>
 
-        <div className="w-full flex justify-center items-center mt-[60px]">
+        {/* <div className="w-full flex justify-center items-center mt-[60px]">
           <img src="/jack_smith_img.png" className="max-w-[345px]" />
+        </div> */}
+
+        <div
+          className="relative flex-1 bg-no-repeat bg-contain lg:bg-left bg-center h-[10.125rem] lg:min-h-[30rem] min-h-[20.125rem] sm:min-h-[30rem] xl:min-h-[30rem] flex    "
+          style={{ backgroundImage: "url(./backgrond_winners.png)" }}
+        >
+          {publicWinners?.data?.length > 0 && (
+            <div className="flex items-center gap-3 absolute lg:left-[50%] left-[60%] w-fit z-10  px-4 py-2 rounded-xl bg-[#f8f8f85b] border-[#0003] sm:text-xl text-sm top-[15%] shadow-2xl">
+              <span className="">
+                {publicWinners?.data[0]?.user?.full_name}
+              </span>
+              🎉{" "}
+            </div>
+          )}
+          {/* <div className="flex items-center text-center justify-end flex-col text-sm gap-1 sm:scale-100 scale-75 absolute lg:left-0 md:left-[15%] left-[7%] w-28 h-40 rounded-xl  z-10  p-2 bg-[#f9f9f9] lg:bottom-[15%] sm:bottom-[10%] bottom-0" style={{ clipPath: 'polygon(0 14%, 100% 0%, 100% 100%, 0 100%)' }} >
+                        <img src="https://plus.unsplash.com/premium_photo-1683121366070-5ceb7e007a97?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D" alt="" className="w-10 h-10 rounded-full object-cover drop-shadow-2xl" />
+                        <h6 className="text-[#3B3B3B] text-xs">Fresh fruit</h6>
+                        <hr className="w-1/4 border-b-[#F33F41] border-b-2" />
+                        <h4 className="font-bold text-sm">$55.00</h4>
+                        <p className="text-[#949494] text-[10px]">Free Shopping</p>
+                    </div> */}
+          {publicWinners?.data?.length > 0 && (
+            <div className="flex xs:items-center justify-end flex-col xs:flex-row  text-sm xs:gap-3 pr-3 absolute shadow-xl rounded-xl  w-fit lg:left-[50%] left-[60%] z-10  p-2 bg-[#ffffff] bottom-1/4">
+              <img
+                src="../../message.png"
+                alt=""
+                className="sm:w-10 sm:h-10 xs:w-6 xs:h-6 w-5 h-5 object-contain drop-shadow-2xl"
+              />
+              <div className="">
+                <div className="relative bg-white rounded-full shadow-xl hidden xs:block">
+                  {Array.from({ length: 5 }).map((_, index) => (
+                    <img
+                      key={index}
+                      src={
+                        publicWinners?.data[index] !== undefined &&
+                        publicWinners?.data[index]?.user?.logo?.length > 0
+                          ? publicWinners?.data[index]?.user?.logo
+                          : "/profile.png"
+                      }
+                      alt="Profile Picture"
+                      className={`sm:min-w-9 min-w-6 sm:min-h-9 min-h-6 sm:w-9 w-6 sm:h-9 h-6 object-cover rounded-full border-white border-2 ${
+                        index == 0 ? "" : "absolute top-0 "
+                      }`}
+                      style={{ left: index * 15 + "%" }}
+                    />
+                  ))}
+                </div>
+                <p className="flex items-center sm:pl-3">
+                  {" "}
+                  <span className="">
+                    <img
+                      src="../../star.svg"
+                      className="min-w-2 min-h-2 w-4 h-4 mr-1 "
+                      alt=""
+                    />
+                  </span>
+                  <span className="text-[#F33F41] pl-1 text-nowrap">
+                    {publicWinners?.data?.length} messages
+                  </span>
+                </p>
+              </div>
+            </div>
+          )}
+
+          <img
+            src={
+              publicWinners?.data[0]?.user?.logo?.length > 0
+                ? publicWinners?.data[0]?.user?.logo
+                : "/profile.png"
+            }
+            alt=""
+            className="w-[150px] sm:w-[220px] h-[150px] sm:h-[220px] rounded-full left-20 sm:left-10 top-[45px] sm:top-20 self-center align-middle object-contain absolute overflow-hidden"
+          />
+
+          <img
+            src="/group_fruit_img.png"
+            className="w-[124px] h-[157px] absolute top-[140px] sm:top-[260px]"
+          />
+
+          {/* <img
+                        className=' object-contain m  absolute  mx-10 md:mx-24 lg:mx-24 top-5 right-0 bottom-0  left-0 self-center overflow-hidden sm:w-[18rem] w-[14rem] h-[14rem] sm:h-[18rem] rounded-full'
+                        // className='sm:w-[15rem] w-[15rem] h-[15rem] sm:h-[15rem] rounded-full
+                        // self-center align-middle inset-0  -top-[1.875rem] lg:left-5 left-1/2 lg:translate-x-0 -translate-x-[60%] object-contain  absolute'
+
+                        // className="sm:w-[20rem] w-[15rem] h-[15rem] sm:h-[20rem] rounded-b-full lg:left-0 left-1/2 lg:top-0 -top-[1.875rem] lg:translate-x-0 -translate-x-[60%] object-contain absolute " 
+                        src={publicWinners?.data[0]?.user?.logo.length > 0 ? publicWinners?.data[0]?.user?.logo : profilePic} /> */}
         </div>
 
         {/* <div
@@ -576,7 +683,10 @@ const Home = () => {
       </div>
       {/* dksjfal;;;;;;;;;;;;;;;;;;;;;;;;;;; */}
       <div className="w-full">
-        <SwiperSectionSlider />
+        <SwiperSectionSlider
+          publicWinners={publicWinners}
+          setPublicWinners={setPublicWinners}
+        />
       </div>
 
       {/* sdskfj;aaaaaaaaaaaaaaaaaaaaaaaaaaaaa */}
